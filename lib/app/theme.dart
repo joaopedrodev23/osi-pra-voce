@@ -19,7 +19,6 @@ class AppTheme {
       secondary: orange,
       tertiary: yellow,
       surface: background,
-      background: background,
     );
 
     return ThemeData(

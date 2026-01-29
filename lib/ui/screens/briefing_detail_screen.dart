@@ -35,10 +35,22 @@ class BriefingDetailScreen extends ConsumerWidget {
               IconButton(
                 tooltip: 'Duplicar',
                 onPressed: () async {
-                  final duplicated = await ref
-                      .read(briefingsControllerProvider.notifier)
-                      .duplicate(briefing.id);
-                  context.go('/briefings/${duplicated.id}');
+                  try {
+                    final duplicated = await ref
+                        .read(briefingsControllerProvider.notifier)
+                        .duplicate(briefing.id);
+                    if (!context.mounted) {
+                      return;
+                    }
+                    context.go('/briefings/${duplicated.id}');
+                  } catch (error) {
+                    if (!context.mounted) {
+                      return;
+                    }
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Erro ao duplicar: $error')),
+                    );
+                  }
                 },
                 icon: const Icon(Icons.copy),
               ),
@@ -180,6 +192,9 @@ class _BriefingDetailBody extends StatelessWidget {
   }
 
   String _withOther(String value, String other) {
+    if (value.trim().isEmpty && other.trim().isNotEmpty) {
+      return other;
+    }
     if (value == 'Outro' && other.trim().isNotEmpty) {
       return 'Outro: $other';
     }

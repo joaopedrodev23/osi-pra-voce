@@ -58,7 +58,11 @@ class BriefingRepositoryImpl implements BriefingRepository {
 
   @override
   Future<Briefing> update(Briefing briefing) async {
-    final updated = briefing.copyWith(updatedAt: DateTime.now());
+    final existing = _box.get(briefing.id);
+    final updated = briefing.copyWith(
+      createdAt: existing?.createdAt ?? briefing.createdAt,
+      updatedAt: DateTime.now(),
+    );
     final model = BriefingModel.fromEntity(updated);
     await _box.put(updated.id, model);
     return updated;

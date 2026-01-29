@@ -71,7 +71,6 @@ class _BriefingFormScreenState extends ConsumerState<BriefingFormScreen> {
   String? _contentType;
   final Set<String> _platforms = {};
   DateTime? _deadline;
-  bool _platformsError = false;
 
   int _currentStep = 0;
   bool _initialized = false;
@@ -79,12 +78,6 @@ class _BriefingFormScreenState extends ConsumerState<BriefingFormScreen> {
   DateTime? _createdAt;
 
   bool get _isEditing => widget.briefingId != null;
-
-  @override
-  void initState() {
-    super.initState();
-    _editingId = widget.briefingId;
-  }
 
   @override
   void dispose() {
@@ -126,9 +119,6 @@ class _BriefingFormScreenState extends ConsumerState<BriefingFormScreen> {
                 _hydrateFromBriefing(briefing);
               }
             });
-            return const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            );
           }
           return _buildForm(context);
         },
@@ -183,7 +173,8 @@ class _BriefingFormScreenState extends ConsumerState<BriefingFormScreen> {
                 children: [
                   TextFormField(
                     controller: _clientNameController,
-                    decoration: const InputDecoration(labelText: 'Nome do cliente'),
+                    decoration:
+                        const InputDecoration(labelText: 'Nome do cliente'),
                     validator: BriefingValidators.requiredField,
                     textInputAction: TextInputAction.next,
                   ),
@@ -198,21 +189,24 @@ class _BriefingFormScreenState extends ConsumerState<BriefingFormScreen> {
                   const SizedBox(height: 12),
                   TextFormField(
                     controller: _phoneController,
-                    decoration: const InputDecoration(labelText: 'Telefone/WhatsApp'),
+                    decoration:
+                        const InputDecoration(labelText: 'Telefone/WhatsApp'),
                     keyboardType: TextInputType.phone,
                     textInputAction: TextInputAction.next,
                   ),
                   const SizedBox(height: 12),
                   TextFormField(
                     controller: _instagramController,
-                    decoration: const InputDecoration(labelText: 'Instagram ou site'),
+                    decoration:
+                        const InputDecoration(labelText: 'Instagram ou site'),
                     validator: BriefingValidators.requiredField,
                     textInputAction: TextInputAction.next,
                   ),
                   const SizedBox(height: 12),
                   TextFormField(
                     controller: _projectNameController,
-                    decoration: const InputDecoration(labelText: 'Nome do projeto/negócio'),
+                    decoration: const InputDecoration(
+                        labelText: 'Nome do projeto/negócio'),
                     validator: BriefingValidators.requiredField,
                   ),
                 ],
@@ -230,14 +224,16 @@ class _BriefingFormScreenState extends ConsumerState<BriefingFormScreen> {
                   DropdownButtonFormField<String>(
                     initialValue: _contentGoal,
                     items: _goalOptions
-                        .map((item) => DropdownMenuItem(value: item, child: Text(item)))
+                        .map((item) =>
+                            DropdownMenuItem(value: item, child: Text(item)))
                         .toList(),
                     onChanged: (value) {
                       setState(() {
                         _contentGoal = value;
                       });
                     },
-                    decoration: const InputDecoration(labelText: 'Objetivo principal'),
+                    decoration:
+                        const InputDecoration(labelText: 'Objetivo principal'),
                     validator: (value) =>
                         value == null ? 'Selecione uma opção' : null,
                   ),
@@ -245,7 +241,8 @@ class _BriefingFormScreenState extends ConsumerState<BriefingFormScreen> {
                     const SizedBox(height: 12),
                     TextFormField(
                       controller: _contentGoalOtherController,
-                      decoration: const InputDecoration(labelText: 'Outro objetivo'),
+                      decoration:
+                          const InputDecoration(labelText: 'Outro objetivo'),
                       validator: (value) => BriefingValidators.otherRequired(
                         selected: _contentGoal ?? '',
                         otherValue: value,
@@ -255,7 +252,8 @@ class _BriefingFormScreenState extends ConsumerState<BriefingFormScreen> {
                   const SizedBox(height: 12),
                   TextFormField(
                     controller: _targetAudienceController,
-                    decoration: const InputDecoration(labelText: 'Público-alvo'),
+                    decoration:
+                        const InputDecoration(labelText: 'Público-alvo'),
                     validator: BriefingValidators.requiredField,
                     maxLines: 2,
                   ),
@@ -263,7 +261,8 @@ class _BriefingFormScreenState extends ConsumerState<BriefingFormScreen> {
                   DropdownButtonFormField<String>(
                     initialValue: _toneOfVoice,
                     items: _toneOptions
-                        .map((item) => DropdownMenuItem(value: item, child: Text(item)))
+                        .map((item) =>
+                            DropdownMenuItem(value: item, child: Text(item)))
                         .toList(),
                     onChanged: (value) {
                       setState(() {
@@ -278,7 +277,8 @@ class _BriefingFormScreenState extends ConsumerState<BriefingFormScreen> {
                     const SizedBox(height: 12),
                     TextFormField(
                       controller: _toneOtherController,
-                      decoration: const InputDecoration(labelText: 'Outro tom de voz'),
+                      decoration:
+                          const InputDecoration(labelText: 'Outro tom de voz'),
                       validator: (value) => BriefingValidators.otherRequired(
                         selected: _toneOfVoice ?? '',
                         otherValue: value,
@@ -301,14 +301,16 @@ class _BriefingFormScreenState extends ConsumerState<BriefingFormScreen> {
                   DropdownButtonFormField<String>(
                     initialValue: _contentType,
                     items: _contentTypeOptions
-                        .map((item) => DropdownMenuItem(value: item, child: Text(item)))
+                        .map((item) =>
+                            DropdownMenuItem(value: item, child: Text(item)))
                         .toList(),
                     onChanged: (value) {
                       setState(() {
                         _contentType = value;
                       });
                     },
-                    decoration: const InputDecoration(labelText: 'Tipo de conteúdo'),
+                    decoration:
+                        const InputDecoration(labelText: 'Tipo de conteúdo'),
                     validator: (value) =>
                         value == null ? 'Selecione uma opção' : null,
                   ),
@@ -316,7 +318,8 @@ class _BriefingFormScreenState extends ConsumerState<BriefingFormScreen> {
                     const SizedBox(height: 12),
                     TextFormField(
                       controller: _contentTypeOtherController,
-                      decoration: const InputDecoration(labelText: 'Outro tipo de conteúdo'),
+                      decoration: const InputDecoration(
+                          labelText: 'Outro tipo de conteúdo'),
                       validator: (value) => BriefingValidators.otherRequired(
                         selected: _contentType ?? '',
                         otherValue: value,
@@ -343,24 +346,11 @@ class _BriefingFormScreenState extends ConsumerState<BriefingFormScreen> {
                             } else {
                               _platforms.remove(platform);
                             }
-                            if (_platforms.isNotEmpty) {
-                              _platformsError = false;
-                            }
                           });
                         },
                       );
                     }).toList(),
                   ),
-                  if (_platformsError) ...[
-                    const SizedBox(height: 8),
-                    Text(
-                      'Selecione ao menos uma plataforma.',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodySmall
-                          ?.copyWith(color: Theme.of(context).colorScheme.error),
-                    ),
-                  ],
                   const SizedBox(height: 16),
                   TextFormField(
                     controller: _deliverablesController,
@@ -393,7 +383,8 @@ class _BriefingFormScreenState extends ConsumerState<BriefingFormScreen> {
                   ),
                   const SizedBox(height: 8),
                   Column(
-                    children: List.generate(_referenceControllers.length, (index) {
+                    children:
+                        List.generate(_referenceControllers.length, (index) {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 12),
                         child: Row(
@@ -441,14 +432,16 @@ class _BriefingFormScreenState extends ConsumerState<BriefingFormScreen> {
                 children: [
                   TextFormField(
                     controller: _keyMessageController,
-                    decoration: const InputDecoration(labelText: 'Mensagem-chave'),
+                    decoration:
+                        const InputDecoration(labelText: 'Mensagem-chave'),
                     validator: BriefingValidators.requiredField,
                     maxLines: 2,
                   ),
                   const SizedBox(height: 12),
                   TextFormField(
                     controller: _ctaController,
-                    decoration: const InputDecoration(labelText: 'Call to Action (CTA)'),
+                    decoration: const InputDecoration(
+                        labelText: 'Call to Action (CTA)'),
                   ),
                   const SizedBox(height: 12),
                   TextFormField(
@@ -459,7 +452,8 @@ class _BriefingFormScreenState extends ConsumerState<BriefingFormScreen> {
                   const SizedBox(height: 12),
                   TextFormField(
                     controller: _notesController,
-                    decoration: const InputDecoration(labelText: 'Observações adicionais'),
+                    decoration: const InputDecoration(
+                        labelText: 'Observações adicionais'),
                     maxLines: 3,
                   ),
                 ],
@@ -473,12 +467,6 @@ class _BriefingFormScreenState extends ConsumerState<BriefingFormScreen> {
 
   void _handleContinue() {
     final isLast = _currentStep == 3;
-    if (_currentStep == 2 && _platforms.isEmpty) {
-      setState(() {
-        _platformsError = true;
-      });
-      return;
-    }
     if (!_stepKeys[_currentStep].currentState!.validate()) {
       return;
     }
@@ -511,27 +499,6 @@ class _BriefingFormScreenState extends ConsumerState<BriefingFormScreen> {
     }
 
     if (_contentGoal == null || _toneOfVoice == null || _contentType == null) {
-      setState(() {
-        _currentStep = 1;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Preencha os campos obrigatórios.')),
-      );
-      return;
-    }
-
-    if (_platforms.isEmpty) {
-      setState(() {
-        _currentStep = 2;
-        _platformsError = true;
-      });
-      return;
-    }
-
-    if (_isEditing && (_editingId == null || _createdAt == null)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Aguarde o carregamento do briefing.')),
-      );
       return;
     }
 
@@ -541,9 +508,6 @@ class _BriefingFormScreenState extends ConsumerState<BriefingFormScreen> {
         .toList();
 
     final now = DateTime.now();
-    final platformsOrdered = _platformOptions
-        .where((platform) => _platforms.contains(platform))
-        .toList();
     final briefing = Briefing(
       id: _editingId ?? '',
       createdAt: _createdAt ?? now,
@@ -559,14 +523,13 @@ class _BriefingFormScreenState extends ConsumerState<BriefingFormScreen> {
           : '',
       targetAudience: _targetAudienceController.text.trim(),
       toneOfVoice: _toneOfVoice ?? '',
-      toneOfVoiceOther: _toneOfVoice == 'Outro'
-          ? _toneOtherController.text.trim()
-          : '',
+      toneOfVoiceOther:
+          _toneOfVoice == 'Outro' ? _toneOtherController.text.trim() : '',
       contentType: _contentType ?? '',
       contentTypeOther: _contentType == 'Outro'
           ? _contentTypeOtherController.text.trim()
           : '',
-      platforms: platformsOrdered,
+      platforms: _platforms.toList(),
       deliverables: _deliverablesController.text.trim(),
       keyMessage: _keyMessageController.text.trim(),
       callToAction: _ctaController.text.trim(),
@@ -578,7 +541,7 @@ class _BriefingFormScreenState extends ConsumerState<BriefingFormScreen> {
 
     final controller = ref.read(briefingsControllerProvider.notifier);
     if (_isEditing) {
-      final updated = await controller.updateBriefing(briefing);
+      final updated = await controller.update(briefing);
       if (!mounted) {
         return;
       }

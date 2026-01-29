@@ -5,11 +5,36 @@ import 'package:go_router/go_router.dart';
 import '../../app/providers.dart';
 import '../../domain/entities/briefing.dart';
 
-class BriefingsListScreen extends ConsumerWidget {
+class BriefingsListScreen extends ConsumerStatefulWidget {
   const BriefingsListScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<BriefingsListScreen> createState() =>
+      _BriefingsListScreenState();
+}
+
+class _BriefingsListScreenState extends ConsumerState<BriefingsListScreen> {
+  late final TextEditingController _searchController;
+
+  @override
+  void initState() {
+    super.initState();
+    final initialQuery = ref.read(searchQueryProvider);
+    _searchController = TextEditingController(text: initialQuery);
+    _searchController.addListener(() {
+      ref.read(searchQueryProvider.notifier).state =
+          _searchController.text.trim();
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final briefingsAsync = ref.watch(briefingsControllerProvider);
     final filtered = ref.watch(filteredBriefingsProvider);
 
@@ -26,9 +51,7 @@ class BriefingsListScreen extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
             child: TextField(
-              onChanged: (value) {
-                ref.read(searchQueryProvider.notifier).state = value;
-              },
+              controller: _searchController,
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.search),
                 hintText: 'Buscar por nome, e-mail ou Instagram/site',
@@ -76,7 +99,11 @@ class _BriefingsList extends StatelessWidget {
         return Card(
           child: ListTile(
             onTap: () => context.push('/briefings/${briefing.id}'),
-            title: Text(briefing.projectName),
+            title: Text(
+              briefing.projectName.isEmpty
+                  ? briefing.clientName
+                  : briefing.projectName,
+            ),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

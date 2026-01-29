@@ -28,7 +28,11 @@ class BriefingsController extends AsyncNotifier<List<Briefing>> {
 
   Future<void> refresh() async {
     state = const AsyncLoading();
-    state = AsyncData(await _listBriefings());
+    try {
+      state = AsyncData(await _listBriefings());
+    } catch (error, stackTrace) {
+      state = AsyncError(error, stackTrace);
+    }
   }
 
   Future<Briefing> create(Briefing briefing) async {
@@ -37,7 +41,7 @@ class BriefingsController extends AsyncNotifier<List<Briefing>> {
     return created;
   }
 
-  Future<Briefing> update(Briefing briefing) async {
+  Future<Briefing> updateBriefing(Briefing briefing) async {
     final updated = await _updateBriefing(briefing);
     _upsert(updated);
     return updated;
