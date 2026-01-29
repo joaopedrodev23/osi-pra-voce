@@ -1,0 +1,21 @@
+# Flutter / Dart
+.dart_tool/
+.build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Platform builds
+android/.gradle/
+android/app/build/
+ios/Pods/
+ios/build/
+
+# Mac / Windows
+.DS_Store
+Thumbs.db
