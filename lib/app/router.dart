@@ -1,6 +1,7 @@
 ﻿import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../ui/screens/briefing_detail_screen.dart';
 import '../ui/screens/briefing_form_screen.dart';
 import '../ui/screens/briefings_list_screen.dart';
 import '../ui/screens/home_screen.dart';
@@ -19,6 +20,20 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/briefings/new',
         builder: (context, state) => const BriefingFormScreen(),
+      ),
+      GoRoute(
+        path: '/briefings/:id',
+        builder: (context, state) {
+          final id = state.pathParameters['id']!;
+          return BriefingDetailScreen(briefingId: id);
+        },
+      ),
+      GoRoute(
+        path: '/briefings/:id/edit',
+        builder: (context, state) {
+          final id = state.pathParameters['id']!;
+          return BriefingFormScreen(briefingId: id);
+        },
       ),
     ],
   );

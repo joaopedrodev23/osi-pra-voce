@@ -21,6 +21,9 @@ class HomeScreen extends StatelessWidget {
                   'assets/branding/osi_logo.png',
                   height: 180,
                   fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) {
+                    return const SizedBox(height: 180);
+                  },
                 ),
               ),
               const SizedBox(height: 24),
